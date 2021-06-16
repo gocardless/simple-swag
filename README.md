@@ -1,12 +1,20 @@
 # simple-swag
 
-Dead simple swagger/openapi docs server, under the covers we use 
+Dead simple Swagger / OpenApi docs server, under the covers we use
 https://github.com/Redocly/redoc to present the docs.
 
 ## Compatibilty
 
-At the present time this server will work for OpenApi/swagger docs version 2 
+At the present time this server will work for OpenApi/Swagger docs version 2 
 or later.
+
+## Install
+
+The easiest way to install is using go install
+
+```
+go install github.com/gocardless/simple-swag@latest
+```
 
 ## Usage
 
@@ -19,3 +27,10 @@ simple-swag
   -port int
     	port to serve http over (default 9000)
 ```
+
+## License & Contributing
+
+* SimpleSwag is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+* Bug reports and pull requests are welcome on GitHub at https://github.com/gocardless/simple-swag
+
+GoCardless ♥ open source. If you do too, come [join us](https://gocardless.com/about/careers/).
