@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 //go:embed index.html
@@ -15,12 +16,19 @@ var indexPage []byte
 func main() {
 	swaggerPath := flag.String("filename", "~/swagger.json", "a path to the swagger/openapi spec")
 	port := flag.Int("port", 9000, "port to serve http over")
+	host := flag.String("host", "127.0.0.1", "host ip to serve using")
 
 	flag.Parse()
+
+	if _, err := os.Stat(*swaggerPath); os.IsNotExist(err) {
+		log.Fatalf("swagger file not found for path %s", *swaggerPath)
+		return
+	}
 
 	swaggerBytes, err := ioutil.ReadFile(*swaggerPath)
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 
 	mux := http.NewServeMux()
@@ -29,6 +37,8 @@ func main() {
 		_, err = w.Write(indexPage)
 		if err != nil {
 			log.Fatal(err)
+		} else {
+			log.Printf("GET - / 200")
 		}
 	})
 	mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
@@ -36,11 +46,13 @@ func main() {
 		_, err = w.Write(swaggerBytes)
 		if err != nil {
 			log.Fatal(err)
+		} else {
+			log.Printf("GET - /swagger.json 200")
 		}
 	})
 
-	log.Printf("Listening on :%d...", *port)
-	err = http.ListenAndServe(fmt.Sprintf(":%d", *port), mux)
+	log.Printf("Listening on http://%s:%d ...", *host, *port)
+	err = http.ListenAndServe(fmt.Sprintf("%s:%d", *host, *port), mux)
 	if err != nil {
 		log.Fatal(err)
 	}
