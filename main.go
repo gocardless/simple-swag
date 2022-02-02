@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 //go:embed index.html
@@ -38,7 +39,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			log.Printf("GET - / 200")
+			log.Printf(fmt.Sprintf("GET - / 200 from %s", r.UserAgent()))
 		}
 	})
 	mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
@@ -47,12 +48,20 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			log.Printf("GET - /swagger.json 200")
+			log.Printf(fmt.Sprintf("GET - /swagger.json 200 from %s", r.UserAgent()))
 		}
 	})
 
 	log.Printf("Listening on http://%s:%d ...", *host, *port)
-	err = http.ListenAndServe(fmt.Sprintf("%s:%d", *host, *port), mux)
+	srv := &http.Server{
+		Addr:              fmt.Sprintf("%s:%d", *host, *port),
+		ReadTimeout:       5 * time.Second,
+		WriteTimeout:      5 * time.Second,
+		IdleTimeout:       30 * time.Second,
+		ReadHeaderTimeout: 2 * time.Second,
+		Handler:           mux,
+	}
+	err = srv.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
