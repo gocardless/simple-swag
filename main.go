@@ -39,7 +39,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			log.Printf(fmt.Sprintf("GET - / 200 from %s", r.UserAgent()))
+			log.Printf(fmt.Sprintf("GET - / 200 UserAgent: %s", r.UserAgent()))
 		}
 	})
 	mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
@@ -48,8 +48,13 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			log.Printf(fmt.Sprintf("GET - /swagger.json 200 from %s", r.UserAgent()))
+			log.Printf(fmt.Sprintf("GET - /swagger.json 200 UserAgent: %s", r.UserAgent()))
 		}
+	})
+
+	mux.HandleFunc("/health/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+		log.Printf(fmt.Sprintf("GET - /health 200 UserAgent: %s", r.UserAgent()))
 	})
 
 	log.Printf("Listening on http://%s:%d ...", *host, *port)
