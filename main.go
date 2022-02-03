@@ -34,22 +34,31 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
+			return
+		}
 		w.WriteHeader(200)
 		_, err = w.Write(indexPage)
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			log.Printf(fmt.Sprintf("GET - / 200 from %s", r.UserAgent()))
+			log.Printf(fmt.Sprintf("GET - / 200 UserAgent: %s", r.UserAgent()))
 		}
 	})
-	mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/swagger.json/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 		_, err = w.Write(swaggerBytes)
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			log.Printf(fmt.Sprintf("GET - /swagger.json 200 from %s", r.UserAgent()))
+			log.Printf(fmt.Sprintf("GET - /swagger.json 200 UserAgent: %s", r.UserAgent()))
 		}
+	})
+
+	mux.HandleFunc("/health/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+		log.Printf(fmt.Sprintf("GET - /health 200 UserAgent: %s", r.UserAgent()))
 	})
 
 	log.Printf("Listening on http://%s:%d ...", *host, *port)
