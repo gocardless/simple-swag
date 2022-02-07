@@ -52,7 +52,7 @@ func main() {
 		}
 	})
 
-	mux.HandleFunc("/health/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 		log.Printf(fmt.Sprintf("GET - /health 200 UserAgent: %s", r.UserAgent()))
 	})
