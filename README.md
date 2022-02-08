@@ -30,8 +30,8 @@ simple-swag
 
 ## Troubleshooting
 
-If you get the following error when attempting to run simple-swag it is 
-likely that Go isnt initialised proeprly in your shell.
+If you get the following error when attempting to run `simple-swag` it is 
+likely that Go isn't initialised properly in your shell.
 
 Add the below lines to your `~/.zshrc` file.
 
@@ -39,7 +39,7 @@ Add the below lines to your `~/.zshrc` file.
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
 ```
-Run `$ source ~/.zshrc`
+Run `source ~/.zshrc`
 
 Try running simple-swag again
 
