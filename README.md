@@ -28,6 +28,21 @@ simple-swag
     	port to serve http over (default 9000)
 ```
 
+## Troubleshooting
+
+If you get the following error when attempting to run simple-swag it is 
+likely that Go isnt initialised proeprly in your shell.
+
+Add the below lines to your `~/.zshrc` file.
+
+```
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$PATH
+```
+Run `$ source ~/.zshrc`
+
+Try running simple-swag again
+
 ## License & Contributing
 
 * SimpleSwag is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
